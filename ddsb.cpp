@@ -16,6 +16,8 @@ int main()
     case 1:
         cout << "Zdarova epta gandffffffondddd!" << endl;
         cout << "ZaaaaaV!" << endl;
+
+        
         break;
     case 2:
         cout << "Hello!" << endl;
