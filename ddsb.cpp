@@ -24,6 +24,7 @@ int main()
         break;
     default:
         cout << "Неизвестный выбор" << endl;
+        
     }
 
     return 0;
