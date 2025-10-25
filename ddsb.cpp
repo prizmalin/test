@@ -14,7 +14,7 @@ int main()
     switch (choice)
     {
     case 1:
-        cout << "Zdarova epta gandondddd!" << endl;
+        cout << "Zdarova epta gandffffffondddd!" << endl;
         break;
     case 2:
         cout << "Hello!" << endl;
