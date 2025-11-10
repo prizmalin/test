@@ -1,7 +1,7 @@
-#include "../include/keeper.h"
-#include "../include/speaker.h"
-#include "../include/admin.h"
-#include "../include/program.h"
+#include "keeper.h"
+#include "speaker.h"
+#include "admin.h"
+#include "program.h"
 #include <stdexcept>
 #include <iostream>
 #include <fstream>

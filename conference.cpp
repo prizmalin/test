@@ -1,2 +1,2 @@
-#include "../include/conference.h"
+#include "conference.h"
 // Абстрактный класс — реализация не требуется

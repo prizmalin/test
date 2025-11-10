@@ -1,4 +1,4 @@
-#include "../include/admin.h"
+#include "admin.h"
 #include <iostream>
 
 // Конструктор по умолчанию

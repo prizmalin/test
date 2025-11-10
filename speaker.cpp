@@ -1,4 +1,4 @@
-#include "../include/speaker.h"
+#include "speaker.h"
 #include <iostream>
 
 // Конструктор по умолчанию
