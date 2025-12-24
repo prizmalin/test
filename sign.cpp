@@ -1,7 +1,7 @@
-#include "../include/sign.h"
 #include <stdexcept>
 #include <iomanip>
 #include <sstream>
+#include "sign.h"
 
 // Вспомогательные функции
 static const char *ZODIAC_NAMES[] = {

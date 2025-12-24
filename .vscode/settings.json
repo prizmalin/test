@@ -4,6 +4,8 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "iosfwd": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     }
 }
