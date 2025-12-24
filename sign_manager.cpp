@@ -1,7 +1,7 @@
-#include "../include/sign_manager.h"
-#include "../include/utils.h"
 #include <iostream>
 #include <stdexcept>
+#include "sign_manager.h"
+#include "utils.h"
 
 // Конструктор по умолчанию
 SignManager::SignManager() : data(nullptr), size(0)

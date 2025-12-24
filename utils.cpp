@@ -1,7 +1,7 @@
-#include "../include/utils.h"
 #include <iostream>
 #include <limits>
 #include <cctype>
+#include "utils.h"
 
 // Приведение к нижнему регистру
 std::string toLower(const std::string &s)

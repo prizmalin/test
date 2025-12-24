@@ -1,8 +1,8 @@
-#include "../include/filetask.h"
-#include "../include/utils.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "filetask.h"
+#include "utils.h"
 
 // Очистка слова от пунктуации по краям
 static std::string normalizeWord(const std::string &w)
