@@ -1,196 +1,183 @@
-#include <iostream>
-#include <limits>
-#include "keeper.h"
-#include "speaker.h"
-#include "admin.h"
-#include "program.h"
+#include "include/filetask.h"
+#include "include/sign_manager.h"
+#include "include/utils.h"
 
-// Вспомогательные функции безопасного ввода
-
-// Безопасное чтение целого числа с обработкой ошибок ввода
-int readInt(const std::string &prompt)
-{
-    int value;
-    while (true)
-    {
-        std::cout << prompt;
-        if (std::cin >> value)
-        {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            return value;
-        }
-        else
-        {
-            std::cout << "Invalid input. Try again.\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
-    }
-}
-
-// Безопасное чтение строки
-std::string readLine(const std::string &prompt)
-{
-    std::string s;
-    std::cout << prompt;
-    std::getline(std::cin, s);
-    return s;
-}
-
-// Основная функция программы
 int main()
 {
-    Keeper keeper; // контейнер для хранения объектов
+    SignManager manager;
+
     bool running = true;
+    bool taskLoop = false;
 
     while (running)
     {
-        // Главное меню
-        std::cout << "\nConference Management Menu\n";
-        std::cout << "1. Add object\n";
-        std::cout << "2. Delete object\n";
-        std::cout << "3. Edit object\n";
-        std::cout << "4. Show all objects\n";
-        std::cout << "5. Save to file\n";
-        std::cout << "6. Load from file\n";
-        std::cout << "7. Exit\n";
+        std::cout << "\n=== Menu ===\n";
+        std::cout << "1. Task 1\n";
+        std::cout << "2. Task 2\n";
+        std::cout << "3. Exit\n";
 
-        int choice = readInt("Select an option: ");
+        int choice = readInt("\nSelect an option: ");
 
-        // Обработка выбора пользователя
         switch (choice)
         {
-        // Добавление нового объекта
         case 1:
         {
-            std::cout << "\nSelect object type to add:\n";
-            std::cout << "1. Speaker\n";
-            std::cout << "2. Admin\n";
-            std::cout << "3. Program\n";
-            int type = readInt("Your choice: ");
+            taskLoop = true;
+            while (taskLoop)
+            {
+                std::cout << "\n=== Task 1: SIGN Database ===\n";
+                std::cout << "1. Add record\n";
+                std::cout << "2. Add record at position\n";
+                std::cout << "3. Remove record\n";
+                std::cout << "4. Edit record\n";
+                std::cout << "5. Show all records\n";
+                std::cout << "6. Sort by birthday\n";
+                std::cout << "7. Search by last name\n";
+                std::cout << "8. Return to main menu\n";
 
-            Conference *obj = nullptr;
+                int c = readInt("\nSelect an option: ");
 
-            if (type == 1)
-            {
-                std::string name = readLine("Enter name: ");
-                std::string org = readLine("Enter organization: ");
-                std::string rep = readLine("Enter report: ");
-                std::string ann = readLine("Enter annotation: ");
-                obj = new Speaker(name, org, rep, ann);
-            }
-            else if (type == 2)
-            {
-                std::string name = readLine("Enter name: ");
-                std::string pos = readLine("Enter position: ");
-                std::string resp = readLine("Enter responsibility: ");
-                obj = new Admin(name, pos, resp);
-            }
-            else if (type == 3)
-            {
-                std::string day = readLine("Enter day: ");
-                std::string time = readLine("Enter time: ");
-                std::string title = readLine("Enter title: ");
-                obj = new Program(day, time, title);
-            }
-            else
-            {
-                std::cout << "Invalid type.\n";
-                break;
-            }
+                switch (c)
+                {
+                case 1:
+                {
+                    SIGN s;
+                    try
+                    {
+                        std::cin >> s;
+                        manager.pushBack(s);
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "Error: " << e.what() << "\n";
+                    }
+                    break;
+                }
 
-            keeper.Add(obj);
-            std::cout << "Object added successfully.\n";
+                case 2:
+                {
+                    int pos = readInt("Enter position: ");
+
+                    if (pos < 0 || pos > manager.getSize())
+                    {
+                        std::cout << "Error: Invalid index for insertion\n";
+                        break;
+                    }
+
+                    SIGN s;
+                    try
+                    {
+                        std::cin >> s;
+                        manager.addAt(pos, s);
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "Error: " << e.what() << "\n";
+                    }
+                    break;
+                }
+
+                case 3:
+                {
+                    int pos = readInt("Enter index to remove: ");
+                    try
+                    {
+                        manager.removeAt(pos);
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "Error: " << e.what() << "\n";
+                    }
+                    break;
+                }
+
+                case 4:
+                {
+                    int pos = readInt("Enter index: ");
+                    try
+                    {
+                        manager.editAt(pos);
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "Error: " << e.what() << "\n";
+                    }
+                    break;
+                }
+
+                case 5:
+                    manager.printAll();
+                    break;
+
+                case 6:
+                    manager.sortByBirthday();
+                    std::cout << "Sorted.\n";
+                    break;
+
+                case 7:
+                {
+                    std::string ln = readLine("Enter last name: ");
+                    int idx = manager.findByLastName(ln);
+                    if (idx == -1)
+                    {
+                        std::cout << "Entry not found.\n";
+                    }
+                    else
+                    {
+                        std::cout << "Found at index " << idx << ":\n";
+                        manager.printOne(idx);
+                    }
+                    break;
+                }
+
+                case 8:
+                    taskLoop = false;
+                    break;
+
+                default:
+                    std::cout << "Invalid option.\n";
+                }
+            }
             break;
         }
 
-        // Удаление объекта по индексу
         case 2:
         {
-            int idx = readInt("\nEnter index to delete: ");
-            try
+            taskLoop = true;
+            while (taskLoop)
             {
-                keeper.Delete(idx);
-            }
-            catch (const std::exception &e)
-            {
-                std::cout << "Error: " << e.what() << "\n";
+                std::cout << "\n=== Task 2: File Processing ===\n";
+                std::cout << "1. Process file\n";
+                std::cout << "2. Return to main menu\n";
+
+                int subChoice = readInt("\nSelect an option: ");
+
+                switch (subChoice)
+                {
+                case 1:
+                    runFileTask();
+                    break;
+
+                case 2:
+                    taskLoop = false;
+                    break;
+
+                default:
+                    std::cout << "Invalid option. Try again.\n";
+                }
             }
             break;
         }
 
-        // Редактирование существующего объекта
         case 3:
-        {
-            int idx = readInt("\nEnter index to edit: ");
-            if (idx < 0 || idx >= keeper.Size())
-            {
-                std::cout << "Invalid index.\n";
-                break;
-            }
-
-            keeper.ShowAll();
-            std::cout << "Editing object #" << idx << "...\n";
-
-            try
-            {
-                keeper.EditByIndex(idx);
-            }
-            catch (const std::exception &e)
-            {
-                std::cout << "Error: " << e.what() << "\n";
-            }
-
-            break;
-        }
-
-        // Отображение всех объектов
-        case 4:
-            std::cout << "\n";
-            keeper.ShowAll();
-            break;
-
-        // Сохранение данных в файл
-        case 5:
-        {
-            std::string path = readLine("\nEnter file name to save: ");
-            try
-            {
-                keeper.SaveToFile(path);
-            }
-            catch (const std::exception &e)
-            {
-                std::cout << "Error: " << e.what() << "\n";
-            }
-            break;
-        }
-
-        // Загрузка данных из файла
-        case 6:
-        {
-            std::string path = readLine("\nEnter file name to load: ");
-            try
-            {
-                keeper.LoadFromFile(path);
-            }
-            catch (const std::exception &e)
-            {
-                std::cout << "Error: " << e.what() << "\n";
-            }
-            break;
-        }
-
-        // Завершение работы программы
-        case 7:
             running = false;
             break;
 
-        // Неверный пункт меню
         default:
-            std::cout << "\nInvalid option. Try again.\n";
+            std::cout << "Invalid option. Try again.\n";
         }
     }
 
-    std::cout << "\nProgram finished.\n\n";
+    std::cout << "\nProgram finished.\n";
     return 0;
 }
